@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      # selfcheck validates cited commands against the real upstream CLI tree.
+      - name: Fetch the upstream Chameleon Ultra CLI
+        run: scripts/install-cli.sh
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Lint
+        run: uv run ruff check ai_shell/ plugin/mcp/
+
+      - name: Dump-analyzer tests
+        run: uv run python -m ai_shell.test_analyze
+
+      - name: Selfcheck (cited commands, gate semantics, simulated plugin install)
+        run: uv run python -m ai_shell.selfcheck

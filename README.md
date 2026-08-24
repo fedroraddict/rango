@@ -1,5 +1,7 @@
 # Rango — Chameleon Ultra AI Copilot
 
+[![CI](https://github.com/fedroraddict/rango/actions/workflows/ci.yml/badge.svg)](https://github.com/fedroraddict/rango/actions/workflows/ci.yml)
+
 Turn a [Chameleon Ultra](https://github.com/RfidResearchGroup/ChameleonUltra) into an
 agent-driven RFID copilot — read, crack, dump, analyze, emulate and clone cards through
 natural language, with safety gates and a host-side card library.
@@ -30,7 +32,7 @@ You (natural language)
 ## Prerequisites
 
 ```bash
-git clone <this-repo> rango && cd rango
+git clone https://github.com/fedroraddict/rango rango && cd rango
 
 scripts/install-cli.sh   # fetches the stock upstream CLI into ../ChameleonUltra
                          # (git clone, with a codeload tarball fallback when

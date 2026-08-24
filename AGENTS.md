@@ -25,6 +25,8 @@ at runtime it is located via `$CHAMELEON_SOFTWARE/script`,
 - `adapters/` — per-harness config/snippets for running the MCP server, skill, and
   card-analyst agent from Claude Code, Codex CLI, and OpenCode (the plugin manifest
   is Kimi-specific; the MCP server is not).
+- `.github/workflows/ci.yml` — CI: ruff, tests, selfcheck (fetches the upstream CLI
+  via `scripts/install-cli.sh` on the runner).
 
 ## Verify changes
 
