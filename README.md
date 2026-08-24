@@ -1,14 +1,28 @@
-# Rango — Chameleon Ultra AI Copilot
+<div align="center">
+
+# Rango
+
+**Chameleon Ultra AI Copilot** — read, crack, dump, analyze, emulate and clone
+RFID cards through natural language, with safety gates and a host-side card library.
 
 [![CI](https://github.com/fedroraddict/rango/actions/workflows/ci.yml/badge.svg)](https://github.com/fedroraddict/rango/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python ≥ 3.10](https://img.shields.io/badge/python-%E2%89%A5%203.10-blue)](pyproject.toml)
+[![MCP](https://img.shields.io/badge/MCP-stdio%20server-green)](https://modelcontextprotocol.io)
+[![Harnesses](https://img.shields.io/badge/harnesses-Kimi%20Code%20%C2%B7%20Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20OpenCode-purple)](adapters/README.md)
 
-Turn a [Chameleon Ultra](https://github.com/RfidResearchGroup/ChameleonUltra) into an
-agent-driven RFID copilot — read, crack, dump, analyze, emulate and clone cards through
-natural language, with safety gates and a host-side card library.
+[Prerequisites](#prerequisites) · [Quick start](#quick-start) · [Other harnesses](#use-from-codex-claude-code-opencode) · [MCP tools](#mcp-tools-16) · [Coverage](#card-coverage) · [Development](#development)
 
-Rango is **only** the AI layer. The official Chameleon Ultra CLI is *not* vendored into
-this repo — clone it separately; Rango locates and drives it in-process (see
-[Prerequisites](#prerequisites)).
+<img src="https://raw.githubusercontent.com/RfidResearchGroup/ChameleonUltra/main/docs/images/ultra-overview.png" alt="Chameleon Ultra device" width="640">
+
+<sub>Chameleon Ultra — image © [RfidResearchGroup](https://github.com/RfidResearchGroup/ChameleonUltra)</sub>
+
+</div>
+
+Rango turns a [Chameleon Ultra](https://github.com/RfidResearchGroup/ChameleonUltra)
+into an agent-driven RFID copilot. It is **only** the AI layer: the official Chameleon
+Ultra CLI is *not* vendored into this repo — clone it separately; Rango locates and
+drives it in-process (see [Prerequisites](#prerequisites)).
 
 Two ways to use it:
 
@@ -17,16 +31,16 @@ Two ways to use it:
 2. **Standalone AI shell** — an enhanced REPL around the stock CLI where `?` talks to
    an LLM (Moonshot/Kimi API or any OpenAI-compatible endpoint).
 
-```
-You (natural language)
-        │
-  Kimi Code agent ── guided by plugin skill (workflows, safety rules)
-        │
-  MCP server (plugin/mcp/) ── one persistent serial owner
-        │
-  ai_shell (bridge · ops · library · dictionaries · analyze)
-        │
-  official CLI (upstream, unmodified) ── USB serial ── Chameleon Ultra
+## Architecture
+
+```mermaid
+flowchart LR
+    U(["You — natural language"]) --> A["Agent harness<br/>Kimi Code · Claude Code · Codex · OpenCode"]
+    SK["SKILL.md<br/>workflows · safety gates · coaching"] -. guides .-> A
+    A -->|"MCP over stdio"| M["chameleon MCP server<br/>16 tools · one persistent serial owner"]
+    M --> S["ai_shell<br/>bridge · ops · library · dictionaries · analyze"]
+    S --> C["official Chameleon Ultra CLI<br/>fetched · unmodified · not vendored"]
+    C -->|"USB serial"| D(["Chameleon Ultra"])
 ```
 
 ## Prerequisites
@@ -92,10 +106,10 @@ skill with stripped frontmatter), OpenCode (`opencode.json` + converted agent fi
 
 ## Card coverage
 
-HF: Mifare Classic (full attack suite), Ultralight/NTAG (incl. `ulcg` backdoor, UL-C
-authnonce), DESFire (`hf des chk`), SEOS, EMV payment, generic ISO14443-A
-sniff/auth-trace. LF: EM410x, EM4x05, HID Prox, ioProx, PAC/Stanley, Viking, Jablotron,
-IDTECK, T5577 writing — plus raw `lf sniff` + offline analysis for unknown families.
+| Band | Families |
+|---|---|
+| **HF** | Mifare Classic (full attack suite) · Ultralight/NTAG (incl. `ulcg` backdoor, UL-C authnonce) · DESFire (`hf des chk`) · SEOS · EMV payment · generic ISO14443-A sniff/auth-trace |
+| **LF** | EM410x · EM4x05 · HID Prox · ioProx · PAC/Stanley · Viking · Jablotron · IDTECK · T5577 writing · raw `lf sniff` + offline analysis for unknown families |
 
 ## Known quirks (verified on hardware)
 
@@ -113,6 +127,9 @@ uv run python -m ai_shell.selfcheck            # cited commands exist in the rea
                                                # gate semantics, simulated /plugins install boot
 uv run python -m ai_shell.test_analyze         # dump-analyzer regression tests
 ```
+
+CI runs the same three gates on every push and PR (see
+[.github/workflows/ci.yml](.github/workflows/ci.yml)).
 
 Layout: `ai_shell/` wrapper library · `plugin/` Kimi Code plugin
 (see [plugin/README.md](plugin/README.md)) · `scripts/` upstream-CLI installer + plugin
