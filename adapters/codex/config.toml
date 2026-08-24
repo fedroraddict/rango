@@ -1,0 +1,5 @@
+# Merge into ~/.codex/config.toml (or .codex/config.toml in a trusted project).
+# Fix the path to point at your rango clone.
+[mcp_servers.chameleon]
+command = "bash"
+args = ["/absolute/path/to/rango/plugin/run-mcp.sh"]

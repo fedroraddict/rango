@@ -1,0 +1,19 @@
+{
+  "name": "chameleon-ultra",
+  "version": "0.1.0",
+  "description": "Operate a Chameleon Ultra RFID device: read, crack, emulate and write cards through the official CLI, with Mifare key-dictionary management.",
+  "keywords": ["rfid", "nfc", "chameleon", "mifare", "hardware"],
+  "license": "MIT",
+  "skills": ["./skills/"],
+  "mcpServers": {
+    "chameleon": {
+      "command": "./run-mcp.sh",
+      "toolTimeoutMs": 300000
+    }
+  },
+  "interface": {
+    "displayName": "Rango — Chameleon Ultra AI Copilot",
+    "shortDescription": "RFID read/crack/emulate/write via the official Chameleon Ultra CLI",
+    "developerName": "local"
+  }
+}

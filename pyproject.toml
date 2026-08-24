@@ -1,0 +1,30 @@
+[project]
+name = "rango"
+version = "0.1.0"
+description = "Rango — AI copilot layer for the Chameleon Ultra (Kimi Code plugin + standalone AI shell)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    "colorama>=0.4.6",
+    "prompt-toolkit>=3.0.39",
+    "pyserial>=3.5",
+    "openai>=2.48.0",
+    "mcp>=2.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.8",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "BLE", "SIM", "RUF"]
+# BLE001: boundary layers intentionally catch everything and report it to the
+# caller (LLM-facing tools); SIM102: nested ifs read better at the confirm gate;
+# E501: long lines here are mostly user-facing strings (tool descriptions, help).
+ignore = ["BLE001", "SIM102", "E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# sys.path bootstrap must run before the ai_shell/mcp imports by design.
+"plugin/mcp/chameleon_mcp.py" = ["E402"]

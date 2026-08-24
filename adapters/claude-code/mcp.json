@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "chameleon": {
+      "command": "bash",
+      "args": ["/absolute/path/to/rango/plugin/run-mcp.sh"]
+    }
+  }
+}

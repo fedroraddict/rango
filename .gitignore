@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.py[cod]
+.ruff_cache/
+build/
+dist/
+.DS_Store
+
+# machine-local setup (do not commit)
+.python-version
+plugin/.rango-root
+
+# card dumps / key material must never be committed
+*.bin
+*.dic
+*.nfc
